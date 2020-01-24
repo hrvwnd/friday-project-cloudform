@@ -1,0 +1,64 @@
+Resources:
+
+  ELB-Create:
+    Type: AWS::ElasticLoadBalancing::LoadBalancer
+    Properties:
+      AvailabilityZones:
+        - eu-west-2a
+        - eu-west-2b
+      LoadBalancerName: "Friday-project-2-ELB"
+      Listeners:
+      - LoadBalancerPort: '80'
+        InstancePort: '80'
+        Protocol: HTTP
+      HealthCheck:
+        Target: HTTP:80/
+        HealthyThreshold: '3'
+        UnhealthyThreshold: '5'
+        Interval: '30'
+        Timeout: '5'
+      SecurityGroups: 
+        - sg-a005e8c0
+  
+
+  LC-Create: 
+  Type: AWS::AutoScaling::LaunchConfiguration
+  Properties: 
+    ImageId: 
+      - "ami-088d602c4192178ea" 
+    InstanceType: 
+      Ref: "t2.micro"
+    IamInstanceProfile: 
+      Ref: "ec2-apigateway-access"
+    SecurityGroups: 
+      - Ref: "sg-a005e8c0"
+
+
+  ASG-Create:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties: 
+      AvailabilityZones: 
+        - eu-west-2a
+        - eu-west-2b
+      LaunchConfigurationName: 
+        Ref: "friday-project-2"
+      MinSize: "2"
+      MaxSize: "2"
+      LoadBalancerNames: 
+        - Ref: "Friday-project-2-ELB"
+      MetricsCollection: 
+        - 
+          Granularity: "1Minute"
+          Metrics: 
+            - "GroupMinSize"
+            - "GroupMaxSize"
+      Tags:
+        - Key: Name
+          Value: Friday-project-2-ASG
+          PropagateAtLaunch: "true"
+        - Key: Purpose
+          Value: WebServerGroup
+          PropagateAtLaunch: "false"
+          PropagateAtLaunch: "true"
+      SecurityGroupIds: 
+        - sg-a005e8c0
