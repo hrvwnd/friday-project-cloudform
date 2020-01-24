@@ -1,4 +1,4 @@
-- hosts: localhost
+- hosts: localhost 
   connection: local
   tasks:
   - name: "generate key pair"
@@ -45,20 +45,16 @@
     wait_for_connection:
   - name: "Gather facts for first time"
     setup:
-    - name: "Install git "
-      apt:
-      name:
-      - git
+  - name: "Install dependancies"
+    apt:
+      pkg:
+        - python3-pip
+        - python-pip
+        - git
       state: latest
       update_cache: true
-    - name: "Run docker.yaml"
-      import_playbook: docker.yaml
-    - name: "Clone repo"
-      git:
-        repo: "https://github.com/hrvwnd/friday-project-cloudform"
-        dest: /home/ubuntu/friday-project-cloudform
-    - name: "docker-compose up build"
-      docker_compose:
-        project_src: /home/ubuntu/friday-project-cloudform
-        build: yes
-  
+
+- name: "Run docker.yaml"
+  import_playbook: docker.yaml
+
+
