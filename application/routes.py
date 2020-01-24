@@ -3,9 +3,9 @@ from application import app
 import requests
 
 @app.route('/')
-@app.route('/request')
-def route():
+@app.route('/home', methods = ["GET", "POST"])
+def home():
 
     r = requests.get("http://service2:5000")
 
-    return r.text
+    return render_template("index.html", title = "home", r=r.text)

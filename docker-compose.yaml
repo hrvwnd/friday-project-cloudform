@@ -22,6 +22,5 @@ services:
   service1:
     image: 127.0.0.1:5000/service1
     build:
-        context: .
-        dockerfile: Dockerfile
-      image: 127.0.0.1:5000/service1
+      context: .
+      dockerfile: Dockerfile

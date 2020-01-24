@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<head>
+    <title> 
+        {{ title }} - Page
+    </title>
+    <style type = "text/css">
+    body {background: #ffffff}
+
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <a href ="{{ url_for('index') }}">Home</a>
+    </div>
+
+</body>
+<body>
+    <main>
+        {% block body_content %}
+        {% endblock %}
+    </main>
+</body>
