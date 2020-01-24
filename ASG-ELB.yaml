@@ -1,3 +1,6 @@
+# Creates an autoscaling group with a launch config containing a flask-app AMI
+# flask app deployed on each instance (instance will need git pull and docker-compose up to run web app
+# Adds an elastic load balencer for the instances inside the ASG
 Resources:
 
   ELBCreate:
@@ -30,7 +33,7 @@ Resources:
       IamInstanceProfile: "ec2-apigateway-access"
       SecurityGroups: 
       - "sg-a005e8c0"
-      
+
 
   ASGCreate:
     Type: AWS::AutoScaling::AutoScalingGroup
@@ -59,3 +62,31 @@ Resources:
     DependsOn:
     - LCCreate
       #SecurityGroupIds: "sg-a005e8c0"
+
+#Resources:
+ # LambdaInvocationsAnomalyDetector:
+  #  Type: AWS::CloudWatch::AnomalyDetector
+   # Properties:
+    #  MetricName: Invocations
+     # Namespace: AWS/Lambda
+      #Stat: Sum
+
+#  LambdaInvocationsAlarm:
+ #   Type: AWS::CloudWatch::Alarm
+  #  Properties:
+   #   AlarmDescription: Lambda invocations
+    #  AlarmName: LambdaInvocationsAlarm
+     # ComparisonOperator: LessThanLowerOrGreaterThanUpperThreshold
+      #EvaluationPeriods: 1
+#      Metrics:
+ #     - Expression: ANOMALY_DETECTION_BAND(m1, 2)
+  #      Id: ad1
+   #   - Id: m1
+    #    MetricStat:
+     #     Metric:
+      #      MetricName: Invocations
+       #     Namespace: AWS/Lambda
+        #  Period: !!int 86400
+         # Stat: Sum
+#     ThresholdMetricId: ad1
+ #     TreatMissingData: breaching
