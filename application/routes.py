@@ -6,6 +6,6 @@ import requests
 @app.route('/home', methods = ["GET", "POST"])
 def home():
 
-    r = requests.get("http://service2:5000")
+    r = requests.get("https://i6swdijhm5.execute-api.eu-west-2.amazonaws.com/api")
 
     return render_template("index.html", title = "home", r=r.text)

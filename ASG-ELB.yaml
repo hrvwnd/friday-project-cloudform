@@ -1,6 +1,6 @@
 Resources:
 
-  ELB-Create:
+  ELBCreate:
     Type: AWS::ElasticLoadBalancing::LoadBalancer
     Properties:
       AvailabilityZones:
@@ -18,34 +18,31 @@ Resources:
         Interval: '30'
         Timeout: '5'
       SecurityGroups: 
-        - sg-a005e8c0
+       - "sg-a005e8c0"
   
 
-  LC-Create: 
-  Type: AWS::AutoScaling::LaunchConfiguration
-  Properties: 
-    ImageId: 
-      - "ami-088d602c4192178ea" 
-    InstanceType: 
-      Ref: "t2.micro"
-    IamInstanceProfile: 
-      Ref: "ec2-apigateway-access"
-    SecurityGroups: 
-      - Ref: "sg-a005e8c0"
+  LCCreate: 
+    Type: AWS::AutoScaling::LaunchConfiguration
+    Properties:
+      LaunchConfigurationName: "friday-project-2-LC" 
+      ImageId: "ami-025c83c9c19b07748"
+      InstanceType: "t2.micro"
+      IamInstanceProfile: "ec2-apigateway-access"
+      SecurityGroups: 
+      - "sg-a005e8c0"
+      
 
-
-  ASG-Create:
+  ASGCreate:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties: 
       AvailabilityZones: 
         - eu-west-2a
         - eu-west-2b
-      LaunchConfigurationName: 
-        Ref: "friday-project-2"
+      LaunchConfigurationName: "friday-project-2-LC"
       MinSize: "2"
       MaxSize: "2"
       LoadBalancerNames: 
-        - Ref: "Friday-project-2-ELB"
+      - "Friday-project-2-ELB"
       MetricsCollection: 
         - 
           Granularity: "1Minute"
@@ -59,6 +56,6 @@ Resources:
         - Key: Purpose
           Value: WebServerGroup
           PropagateAtLaunch: "false"
-          PropagateAtLaunch: "true"
-      SecurityGroupIds: 
-        - sg-a005e8c0
+    DependsOn:
+    - LCCreate
+      #SecurityGroupIds: "sg-a005e8c0"
